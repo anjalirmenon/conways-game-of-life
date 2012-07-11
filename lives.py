@@ -1,4 +1,4 @@
-import random, time
+import random
 import pygame,sys
 c = 10
 wt = 600
