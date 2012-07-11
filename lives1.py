@@ -1,7 +1,7 @@
 import random
 import pygame,sys
-wt = 500
-ht = 500
+wt = 100
+ht = 100
 black=(0,0,0)
 white=(255,255,255)
 livcel = set()
@@ -14,30 +14,21 @@ def addcel(x, y):
 		if not (x+x1,x+y1) in livcel:	
 			dedcel.add((x+x1,y+y1))
 	pygame.draw.rect(screen,(0,0,0),(x*10,y*10,10,10))
-for i in range((50*50)/2):
-	x = random.randint(0,50)
-	y = random.randint(0,50)
+for i in range((10*10)/2):
+	x = random.randint(0,10)
+	y = random.randint(0,10)
 	addcel(x,y)
-while True:
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			pygame.quit()
-			sys.exit()
-		else:
-			if pygame.mouse.get_pressed()[0]:
-				px, py = pygame.mouse.get_pos()
-				nx, ny = px/c, py/c
-				if (nx, ny) in livcel:
-					dedcel.add((nx, ny))
-					livcel.remove((nx, ny))
-				else:	
-					addcel(nx, ny)
-					dedcel.discard((nx, ny))
+while pygame.event.poll().type != pygame.QUIT:
+		if (x, y) in livcel:
+			dedcel.add((x, y))
+			livcel.remove((x, y))
+		else:	
+			addcel(x, y)
+			dedcel.discard((x, y))
 	
 		pygame.display.flip()
 		for (x,y) in tuple(livcel):
 			n = sum(((x+x1, y+y1) in livcel for (x1,y1) in ((-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1))))
-			#if n not in (2, 3):
 			if n > 3 or n < 2:
 				livcel.remove((x, y))
 				dedcel.add((x, y))
